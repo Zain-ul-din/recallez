@@ -17,8 +17,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  console.log("hello from child layout");
-
   return (
     <html lang="en" className="w-full h-full">
       <body className={cn(inter.className, "bg-background w-full h-full")}>

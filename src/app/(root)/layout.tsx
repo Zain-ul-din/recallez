@@ -14,8 +14,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  console.log("hello from root layout");
-
   return (
     <html lang="en">
       <body className={`${inter.className} bg-background`}>

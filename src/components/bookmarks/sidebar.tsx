@@ -22,8 +22,14 @@ export default function SideBar() {
   );
 }
 
+import { useFormState, useFormStatus } from "react-dom";
+import addBookMark from "@/actions/add-bookmark";
+
 const AddBtn = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [state, action] = useFormState(addBookMark, {
+    message: ""
+  });
 
   return (
     <>
@@ -37,16 +43,27 @@ const AddBtn = () => {
           <PlusIcon className="w-4 h-4 inset-0" />
         </span>
 
-        <div
+        <form
+          action={action}
           className={cn(
             "my-2 flex flex-col gap-2 transition-all duration-75 ease-in-out",
             isOpen ? "max-h-[200px] opacity-100" : "max-h-0 opacity-0"
           )}
         >
-          <Input placeholder="Enter Website URL" size={8} />{" "}
-          <Button variant={"outline"}>Add</Button>
-        </div>
+          <Input placeholder="Enter Website URL" name="url" size={8} required />{" "}
+          <FormSubmitBtn />
+        </form>
       </div>
     </>
+  );
+};
+
+const FormSubmitBtn = () => {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button type="submit" variant={"outline"} isLoading={pending}>
+      Add
+    </Button>
   );
 };
