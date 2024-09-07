@@ -3,6 +3,7 @@
 import { connectNeo4j } from "@/lib/neo4j";
 import { delay } from "@/lib/utils";
 import * as cheerio from "cheerio";
+import { revalidatePath } from "next/cache";
 
 type FormState = {
   message?: string;
@@ -50,6 +51,11 @@ export default async function addBookMark(
   );
 
   console.log(res.records.map((r) => r.get(0).properties));
+
+  await session.close();
+  await driver.close();
+
+  revalidatePath("/bookmarks");
 
   return {
     message: "hello world"
