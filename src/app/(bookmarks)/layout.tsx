@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { cn } from "../../lib/utils";
 import "../globals.css";
+import SideBar from "@/components/bookmarks/sidebar";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,11 +22,17 @@ export default function RootLayout({
   return (
     <html lang="en" className="w-full h-full">
       <body className={cn(inter.className, "bg-background w-full h-full")}>
-        <main className="w-full relative h-full bg-background min-h-screen pl-4">
-          {/* side bar */}
-          <div className="absolute left-0 top-0 bottom-0 w-2/12 bg-secondary border-r max-w-screen-sm min-w-72 border-border rounded-r-md -translate-x-[98%] hover:translate-x-0 transition-all duration-200"></div>
-          {children}
-        </main>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <main className="w-full relative h-full bg-background min-h-screen pl-4">
+            <SideBar />
+            {children}
+          </main>
+        </ThemeProvider>
       </body>
     </html>
   );
