@@ -6,6 +6,7 @@ import SideBar from "@/components/bookmarks/sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { connectNeo4j } from "@/lib/neo4j";
 import BookMark from "@/types/bookmark";
+import { BookMarksProvider } from "@/providers/bookmarks";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -38,10 +39,12 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main className="w-full relative h-full bg-background min-h-screen pl-4">
-            <SideBar bookmarks={allBookMarks} />
-            {children}
-          </main>
+          <BookMarksProvider bookmarks={allBookMarks}>
+            <main className="w-full relative h-full bg-background min-h-screen pl-4">
+              <SideBar bookmarks={allBookMarks} />
+              {children}
+            </main>
+          </BookMarksProvider>
         </ThemeProvider>
       </body>
     </html>
