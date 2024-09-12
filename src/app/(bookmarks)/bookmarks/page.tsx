@@ -3,6 +3,7 @@
 import { ThemeToggler } from "@/components/bookmarks/theme-toggler";
 import { useBookMarks } from "@/providers/bookmarks";
 import BookMark from "@/types/bookmark";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function BookMarksPage() {
@@ -65,30 +66,32 @@ const BookMarkCard = ({ bookmark }: { bookmark: BookMark }) => {
   // }, [imgUrl]);
 
   return (
-    <div className="bg-background hover:bg-accent/15 border rounded-lg shadow-lg overflow-hidden">
-      <div
-        dangerouslySetInnerHTML={{
-          __html: `
-            <img src="${imgUrl}" alt="${bookmark.title} card" style="width:100%; height:12rem; object-fit: cover;" onerror="this.onerror=null;this.src='/images/placeholder.svg'"/>
+    <Link href={`bookmarks/${bookmark.id}`}>
+      <div className="bg-background h-full hover:bg-accent/15 border rounded-lg shadow-lg overflow-hidden">
+        <div
+          dangerouslySetInnerHTML={{
+            __html: `
+          <img src="${imgUrl}" alt="${bookmark.title} card" style="width:100%; height:12rem; object-fit: cover;" onerror="this.onerror=null;this.src='/images/placeholder.svg'"/>
           `
-        }}
-      >
-        {/* <img
+          }}
+        >
+          {/* <img
           src={imgUrl}
           alt={`${bookmark.title} og card`}
           className="w-full h-48 object-cover"
           onError={(e) => {
             alert("error");
             console.log(e);
-          }}
-        /> */}
+            }}
+            /> */}
+        </div>
+        <div className="p-4">
+          <h1 className="text-lg font-medium line-clamp-2">{bookmark.title}</h1>
+          <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">
+            {bookmark.description}
+          </p>
+        </div>
       </div>
-      <div className="p-4">
-        <h1 className="text-lg font-medium line-clamp-2">{bookmark.title}</h1>
-        <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">
-          {bookmark.description}
-        </p>
-      </div>
-    </div>
+    </Link>
   );
 };

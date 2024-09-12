@@ -31,10 +31,7 @@ export default async function addBookMark(
     $(`head > meta[name="description"]`).attr("content") ||
     "No description found.";
 
-  console.log(content, "og Card:", ogCard, title, " ", description);
-
   // if([].every()) validate before
-
   const { driver, session } = connectNeo4j();
 
   const res = await session.run(
@@ -66,8 +63,10 @@ const fetchContent = async (url: string) => {
   const res = await (
     await fetch(url, {
       headers: {
-        "User-Agent":
-          "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+        "User-Agent": "OpenGraph",
+        "Cache-Control": "no-cache",
+        Accept: "*/*",
+        Connection: "keep-alive"
       }
     })
   ).text();

@@ -22,10 +22,10 @@ export default async function RootLayout({
 }>) {
   const { session, driver } = connectNeo4j();
 
-  const res = await session.run(`MATCH (s:Site) RETURN s`);
-  const allBookMarks = res.records.map(
-    (r) => r.get(0).properties
-  ) as BookMark[];
+  const res = await session.run(`MATCH (s:Site) RETURN id(s) as id, s`);
+  const allBookMarks = res.records.map((r) => {
+    return { id: r.get("id").toNumber(), ...r.get("s").properties };
+  }) as BookMark[];
 
   await session.close();
   await driver.close();
