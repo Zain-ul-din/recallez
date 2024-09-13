@@ -4,4 +4,5 @@ export default interface BookMark {
   title: string;
   description: string;
   url: string;
+  tags?: { id: string; name: string }[];
 }
