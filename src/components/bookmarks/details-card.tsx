@@ -1,5 +1,5 @@
 "use client";
-
+import { BasicNvlWrapper } from "@neo4j-nvl/react";
 import BookMark from "@/types/bookmark";
 import { Button } from "../ui/button";
 import { PlusIcon } from "lucide-react";
@@ -14,35 +14,53 @@ export default function BookmarkDetailsCard({
   bookmark: BookMark;
 }) {
   return (
-    <div className="w-full border rounded-md rounded-t-none my-12">
-      <div
-        dangerouslySetInnerHTML={{
-          __html: `
-    <img src="${bookmark.ogCard}" alt="${bookmark.title} card" style="width:100%; max-width: 100%; height: auto; max-height: 450px; border-radius: .2rem; object-fit: cover;" onerror="this.onerror=null;this.src='/images/placeholder.svg'"/>
-    `
-        }}
-      ></div>
-      <div className="p-4 my-4">
-        <h1 className="text-xl font-medium">{bookmark.title}</h1>
-        <p className="mt-2 text-muted-foreground">{bookmark.description}</p>
-        <div className="mt-6">
-          <h1 className="text-lg font-medium">Tags</h1>
-          <div className="flex flex-wrap gap-2 mt-2">
-            {(bookmark.tags || []).map((tag, idx) => {
-              return (
-                <span
-                  key={idx}
-                  className="p-2 border rounded-[1rem] px-4 bg-primary-foreground/40 hover:bg-accent cursor-pointer min-w-14 text-center text-sm"
-                >
-                  {tag.name}
-                </span>
-              );
-            })}
-            <AddTagForm bookmarkId={bookmark.id} />
+    <>
+      <BasicNvlWrapper
+        nodes={[
+          {
+            id: `node-${bookmark.id}`,
+            captions: [{ value: "Site" }]
+          },
+          ...bookmark.tags!.map((t) => ({ id: t.id, color: "#903", size: 20 }))
+        ]}
+        rels={[
+          ...bookmark.tags!.map((t, i) => ({
+            id: t.id,
+            from: `node-${bookmark.id}`,
+            to: t.id
+          }))
+        ]}
+      />
+      <div className="w-full border rounded-md rounded-t-none my-12">
+        <div
+          dangerouslySetInnerHTML={{
+            __html: `
+          <img src="${bookmark.ogCard}" alt="${bookmark.title} card" style="width:100%; max-width: 100%; height: auto; max-height: 450px; border-radius: .2rem; object-fit: cover;" onerror="this.onerror=null;this.src='/images/placeholder.svg'"/>
+          `
+          }}
+        ></div>
+        <div className="p-4 my-4">
+          <h1 className="text-xl font-medium">{bookmark.title}</h1>
+          <p className="mt-2 text-muted-foreground">{bookmark.description}</p>
+          <div className="mt-6">
+            <h1 className="text-lg font-medium">Tags</h1>
+            <div className="flex flex-wrap gap-2 mt-2">
+              {(bookmark.tags || []).map((tag, idx) => {
+                return (
+                  <span
+                    key={idx}
+                    className="p-2 border rounded-[1rem] px-4 bg-primary-foreground/40 hover:bg-accent cursor-pointer min-w-14 text-center text-sm"
+                  >
+                    {tag.name}
+                  </span>
+                );
+              })}
+              <AddTagForm bookmarkId={bookmark.id} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
