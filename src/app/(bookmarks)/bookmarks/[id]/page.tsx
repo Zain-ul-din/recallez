@@ -14,7 +14,7 @@ export default async function SingleBookMark({
 
   const res = await session.run(
     `MATCH (s:Site) WHERE id(s) = $id 
-    MATCH (s)-[:CONTAINS]->(t:Tag) RETURN s, collect(t) as tags 
+    OPTIONAL MATCH (s)-[:CONTAINS]->(t:Tag) RETURN s, collect(t) as tags 
   `,
     {
       id: neo4j.int(id)
